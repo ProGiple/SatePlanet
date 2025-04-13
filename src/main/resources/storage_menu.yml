@@ -1,0 +1,10 @@
+title: "&0"
+rows: 4
+items:
+  decorations: {}
+  panel:
+    displayName: ""
+    material: BLACK_STAINED_GLASS_PANE
+    lore: []
+    slots:
+      - "0-8"

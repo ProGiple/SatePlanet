@@ -1,0 +1,26 @@
+name: SatePlanet
+version: '${project.version}'
+main: org.satellite.dev.progiple.sateplanet.SatePlanet
+api-version: '1.16'
+authors: [ProGiple]
+depend:
+  - LunaSpring
+  - NBTAPI
+commands:
+  sateplanet:
+    usage: /sateplanet reload/give/storage <player>
+    aliases:
+      - sp
+      - satep
+      - sateplanets
+      - planet
+      - plantes
+      - splanet
+      - splanets
+permissions:
+  sateplanet.admin:
+    default: op
+  sateplanet.oxygenBypass:
+    default: false
+  sateplanet.gravitationBypass:
+    default: false

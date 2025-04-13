@@ -1,0 +1,8 @@
+locations: []
+items:
+  1: ItemStack
+  2:
+    material: STONE
+    displayName: ""
+    lore: []
+    amount: 6

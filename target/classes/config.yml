@@ -1,0 +1,57 @@
+oxygen_helmet:
+  material: BLUE_STAINED_GLASS
+  displayName: "&bГермошлем"
+  lore:
+    - " "
+    - "&f Защищает от радиации"
+    - "&f На всех &bпланетах!"
+    - " "
+armor_toughness:
+  IRON_HELMET: 1
+  IRON_CHESTPLATE: 1
+  IRON_LEGGINGS: 1
+  IRON_BOOTS: 1
+  DIAMOND_HELMET: 2
+  DIAMOND_LEGGINGS: 2
+  DIAMOND_CHESTPLATE: 2
+  DIAMOND_BOOTS: 2
+  NETHERITE_HELMET: 3
+  NETHERITE_CHESTPLATE: 3
+  NETHERITE_LEGGINGS: 3
+  NETHERITE_BOOTS: 3
+gravitation:
+  world2:
+    disOxygen:
+      - "POISON-3"
+      - "WITHER-2"
+    0:
+      - "SLOW_FALLING-4"
+      - "JUMP-4"
+      - "SLOW-2"
+    3:
+      - "SLOW_FALLING-3"
+      - "JUMP-3"
+      - "SLOW-1"
+    6:
+      - "SLOW_FALLING-2"
+      - "JUMP-2"
+    8:
+      - "SLOW_FALLING-1"
+      - "JUMP-1"
+    9: []
+nether_link:
+  world: world_nether
+  world1: world_nether1
+  world2: world_nether2
+storages:
+  uses: 3
+  refreshTime: 60
+messages:
+  noPermission: []
+  reload: []
+  unknownPlayer: []
+  setStorage: []
+  updateStorage: []
+  storageIsClaimed: []
+  storageIsOpened: []
+  addItem: []
