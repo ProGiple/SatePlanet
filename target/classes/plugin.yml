@@ -1,14 +1,15 @@
 name: SatePlanet
-version: '1.0.2'
+version: '1.0.3'
 main: org.satellite.dev.progiple.sateplanet.SatePlanet
 api-version: '1.16'
 authors: [ProGiple]
 depend:
   - LunaSpring
   - NBTAPI
+  - DecentHolograms
 commands:
   sateplanet:
-    usage: /sateplanet reload/give/storage <player>
+    usage: /sateplanet reload/give <player>/storage <set, update>/planet <player>
     aliases:
       - sp
       - satep

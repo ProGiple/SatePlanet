@@ -1,0 +1,26 @@
+world2:
+  command: moon
+  fly_time: 6
+  teleport_location:
+    x: 0
+    y: 100
+    z: 0
+  gravitation:
+    0:
+      - "SLOW_FALLING-4"
+      - "JUMP-4"
+      - "SLOW-2"
+    3:
+      - "SLOW_FALLING-3"
+      - "JUMP-3"
+      - "SLOW-1"
+    6:
+      - "SLOW_FALLING-2"
+      - "JUMP-2"
+    8:
+      - "SLOW_FALLING-1"
+      - "JUMP-1"
+    9: []
+  disOxygen:
+    - "POISON-3"
+    - "WITHER-2"

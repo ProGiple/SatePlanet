@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.novasparkle.lunaspring.API.Util.Service.managers.NBTManager;
 import org.satellite.dev.progiple.sateplanet.storages.Storage;
 import org.satellite.dev.progiple.sateplanet.storages.StorageManager;
 
@@ -12,6 +13,7 @@ public class BlockBreakHandler implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Block block = e.getBlock();
+        if (!NBTManager.hasTag(block, "planet-storage")) return;
 
         Storage storage = StorageManager.getStorage(block);
         if (storage == null) return;

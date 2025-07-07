@@ -18,7 +18,8 @@ public final class SatePlanet extends LunaPlugin {
         INSTANCE = this;
         this.initialize();
 
-        this.loadFiles(true, "storage_menu.yml", "storage_data.yml");
+        this.loadFiles(true, "storages/storage_menu.yml", "storages/storage_data.yml",
+                "planets/planet_menu.yml", "planets/planets.yml");
         this.registerListeners(
                 new JoinLeaveHandler(),
                 new InteractHandler(),

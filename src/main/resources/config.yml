@@ -1,6 +1,7 @@
 oxygen_helmet:
   material: BLUE_STAINED_GLASS
   displayName: "&bГермошлем"
+  amount: 1
   lore:
     - " "
     - "&f Защищает от радиации"
@@ -19,33 +20,20 @@ armor_toughness:
   NETHERITE_CHESTPLATE: 3
   NETHERITE_LEGGINGS: 3
   NETHERITE_BOOTS: 3
-gravitation:
-  world2:
-    disOxygen:
-      - "POISON-3"
-      - "WITHER-2"
-    0:
-      - "SLOW_FALLING-4"
-      - "JUMP-4"
-      - "SLOW-2"
-    3:
-      - "SLOW_FALLING-3"
-      - "JUMP-3"
-      - "SLOW-1"
-    6:
-      - "SLOW_FALLING-2"
-      - "JUMP-2"
-    8:
-      - "SLOW_FALLING-1"
-      - "JUMP-1"
-    9: []
-nether_link:
-  world: world_nether
-  world1: world_nether1
-  world2: world_nether2
 storages:
   uses: 3
   refreshTime: 60
+  holograms:
+    isOpened:
+      height: 2.4
+      lines: []
+    isClosed:
+      height: 2.4
+      lines: [ ]
+    inTimer:
+      updatable: true
+      height: 2.4
+      lines: [ ]
 messages:
   noPermission: []
   reload: []

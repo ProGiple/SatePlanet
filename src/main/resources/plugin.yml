@@ -6,9 +6,10 @@ authors: [ProGiple]
 depend:
   - LunaSpring
   - NBTAPI
+  - DecentHolograms
 commands:
   sateplanet:
-    usage: /sateplanet reload/give/storage <player>
+    usage: /sateplanet reload/give <player>/storage <set, update>/planet <player>
     aliases:
       - sp
       - satep

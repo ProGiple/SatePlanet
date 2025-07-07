@@ -15,7 +15,7 @@ import org.novasparkle.lunaspring.API.Menus.Items.Item;
 import org.novasparkle.lunaspring.API.Util.utilities.Utils;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.configs.Config;
-import org.satellite.dev.progiple.sateplanet.configs.MenuConfig;
+import org.satellite.dev.progiple.sateplanet.configs.StorageMenuConfig;
 import org.satellite.dev.progiple.sateplanet.configs.StorageData;
 import org.satellite.dev.progiple.sateplanet.storages.Storage;
 
@@ -31,10 +31,10 @@ public class StorageMenu extends AMenu {
     @Getter private final Storage storage;
     @Setter private byte uses = (byte) Config.getInt("storages.uses");
     public StorageMenu(Player player, Storage storage) {
-        super(player, MenuConfig.getTitle(), MenuConfig.getSize(), MenuConfig.getSection("items.decorations"));
+        super(player, StorageMenuConfig.getTitle(), StorageMenuConfig.getSize(), StorageMenuConfig.getSection("items.decorations"));
         this.storage = storage;
 
-        ConfigurationSection panelSection = MenuConfig.getSection("items.panel");
+        ConfigurationSection panelSection = StorageMenuConfig.getSection("items.panel");
         this.panelButtons = Utils.getSlotList(panelSection.getStringList("slots"))
                 .stream()
                 .map(s -> new Item(panelSection, s))

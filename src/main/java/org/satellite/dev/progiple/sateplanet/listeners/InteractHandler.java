@@ -42,11 +42,12 @@ public class InteractHandler implements Listener {
             }
         } else {
             Block block = e.getClickedBlock();
-            if (block == null) return;
+            if (block == null || !NBTManager.hasTag(block, "planet-storage")) return;
 
             Storage storage = StorageManager.getStorage(block);
             if (storage == null) return;
 
+            e.setCancelled(true);
             storage.onClick(player);
         }
     }

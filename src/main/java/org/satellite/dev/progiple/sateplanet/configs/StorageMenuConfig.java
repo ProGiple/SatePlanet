@@ -9,10 +9,10 @@ import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import java.io.File;
 
 @UtilityClass
-public class MenuConfig {
+public class StorageMenuConfig {
     private final IConfig config;
     static {
-        config = new IConfig(new File(SatePlanet.getINSTANCE().getDataFolder(), "storage_menu.yml"));
+        config = new IConfig(new File(SatePlanet.getINSTANCE().getDataFolder(), "storages/storage_menu.yml"));
     }
 
     public void reload() {

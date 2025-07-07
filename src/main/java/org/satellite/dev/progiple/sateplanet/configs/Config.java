@@ -43,4 +43,8 @@ public class Config {
     public String getString(String path) {
         return config.getString(path);
     }
+
+    public boolean getBool(String path) {
+        return config.getBoolean(path);
+    }
 }

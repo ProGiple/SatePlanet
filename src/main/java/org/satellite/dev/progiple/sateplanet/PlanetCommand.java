@@ -11,11 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.novasparkle.lunaspring.API.Menus.Items.NonMenuItem;
+import org.novasparkle.lunaspring.API.Menus.MenuManager;
 import org.novasparkle.lunaspring.API.Util.Service.managers.NBTManager;
 import org.novasparkle.lunaspring.API.Util.utilities.Utils;
-import org.satellite.dev.progiple.sateplanet.configs.Config;
-import org.satellite.dev.progiple.sateplanet.configs.MenuConfig;
-import org.satellite.dev.progiple.sateplanet.configs.StorageData;
+import org.satellite.dev.progiple.sateplanet.configs.*;
+import org.satellite.dev.progiple.sateplanet.planets.PMenu;
 import org.satellite.dev.progiple.sateplanet.storages.Storage;
 import org.satellite.dev.progiple.sateplanet.storages.StorageManager;
 
@@ -31,8 +31,10 @@ public class PlanetCommand implements TabExecutor {
                 }
                 case "reload" -> {
                     Config.reload();
-                    MenuConfig.reload();
+                    StorageMenuConfig.reload();
                     StorageData.reload();
+                    PlanetConfig.reload();
+                    PlanetMenuConfig.reload();
                     Config.sendMessage(commandSender, "reload");
                 }
                 case "give" -> {
@@ -43,10 +45,29 @@ public class PlanetCommand implements TabExecutor {
                         return true;
                     }
 
-                    ItemStack item = new NonMenuItem(Config.getSection("oxygen_helmet")).getItemStack();
-                    NBTManager.setString(item, "lunaspring-item-id", "test");
+                    ItemStack item = new NonMenuItem(Config.getSection("oxygen_helmet")).getDefaultStack();
                     NBTManager.setBool(item, "sateplanet_oxy_helmet", true);
                     player.getInventory().addItem(item);
+                }
+                case "planet" -> {
+                    if (strings.length < 2) return false;
+                    Player player = strings.length >= 3 ? Bukkit.getPlayerExact(strings[2]) : null;
+
+                    if (player == null || !player.isOnline()) {
+                        if (player == null && commandSender instanceof Player) player = (Player) commandSender;
+                        else {
+                            Config.sendMessage(commandSender, "unknownPlayer", commandSender.getName());
+                            return true;
+                        }
+                    }
+
+                    String sectionName = PlanetConfig.getSection(null).getKeys(false).stream()
+                            .filter(k -> strings[1].equalsIgnoreCase(PlanetConfig.getString(k + ".command")))
+                            .findFirst()
+                            .orElse(null);
+                    if (sectionName == null) return false;
+
+                    MenuManager.openInventory(player, new PMenu(player, sectionName));
                 }
                 case "storage" -> {
                     if (strings.length < 2) return false;
@@ -57,10 +78,12 @@ public class PlanetCommand implements TabExecutor {
                             return true;
                         }
 
-                        Block block = player.getTargetBlock(8);
+                        Block block = player.getTargetBlock(9);
                         if (block == null) return true;
 
                         new Storage(block.getLocation());
+                        NBTManager.setString(block, "planet-storage", "value");
+
                         Config.sendMessage(player, "setStorage");
                         return true;
                     }
@@ -105,7 +128,7 @@ public class PlanetCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1) {
-            return List.of("reload", "give", "storage");
+            return List.of("reload", "give", "storage", "planet");
         }
         else if (strings.length == 2) {
             if (strings[0].equalsIgnoreCase("give"))
@@ -113,9 +136,16 @@ public class PlanetCommand implements TabExecutor {
             else if (strings[0].equalsIgnoreCase("storage")) {
                 return List.of("set", "update", "addItem");
             }
+            else if (strings[0].equalsIgnoreCase("planet")) {
+                return PlanetConfig.getSection(null).getKeys(false).stream()
+                        .map(k -> PlanetConfig.getString(k + ".command")).toList();
+            }
         }
-        else if (strings.length == 3 && strings[0].equalsIgnoreCase("storage")
-        && strings[1].equalsIgnoreCase("update")) return List.of("all");
+        else if (strings.length == 3) {
+            if (strings[0].equalsIgnoreCase("storage")
+                    && strings[1].equalsIgnoreCase("update")) return List.of("all");
+            else if (strings[0].equalsIgnoreCase("planet")) Utils.getPlayerNicks(strings[2]);
+        }
         return List.of();
     }
 }

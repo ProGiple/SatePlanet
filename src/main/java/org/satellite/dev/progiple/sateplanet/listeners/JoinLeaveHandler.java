@@ -16,6 +16,7 @@ import org.novasparkle.lunaspring.API.Util.Service.managers.NBTManager;
 import org.novasparkle.lunaspring.API.Util.utilities.LunaMath;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.configs.Config;
+import org.satellite.dev.progiple.sateplanet.configs.PlanetConfig;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class JoinLeaveHandler implements Listener {
         int taskId = Bukkit.getScheduler().runTaskTimer(SatePlanet.getINSTANCE(), () -> {
             String worldName = player.getLocation().getWorld().getName();
 
-            ConfigurationSection section = Config.getSection(String.format("gravitation.%s", worldName));
+            ConfigurationSection section = PlanetConfig.getSection(worldName);
             if (section != null) {
                 PlayerInventory inventory = player.getInventory();
 
@@ -48,8 +49,11 @@ public class JoinLeaveHandler implements Listener {
                 if (!player.hasPermission("sateplanet.gravitationBypass")) {
                     int toughness = this.getAmount(inventory.getBoots()) + this.getAmount(inventory.getLeggings())
                             + this.getAmount(inventory.getChestplate()) + this.getAmount(helmet);
-                    player.addPotionEffects(section.getStringList(String.valueOf(this.getToughnessLevel(
-                            toughness, section.getKeys(false))))
+
+                    ConfigurationSection gravitationSection = section.getConfigurationSection("gravitation");
+                    assert gravitationSection != null;
+                    player.addPotionEffects(gravitationSection.getStringList(String.valueOf(this.getToughnessLevel(
+                            toughness, gravitationSection.getKeys(false))))
                             .stream()
                             .map(this::getEffect)
                             .filter(Objects::nonNull)
@@ -77,14 +81,6 @@ public class JoinLeaveHandler implements Listener {
 
     private int getToughnessLevel(int number, Set<String> keys) {
         return keys.stream()
-                .filter(v -> {
-                    try {
-                        Integer.parseInt(v);
-                        return true;
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
-                })
                 .map(LunaMath::toInt)
                 .min(Comparator.comparingInt(a -> Math.abs(a - number)))
                 .orElseThrow(() -> new IllegalArgumentException("Множество значений пусто"));
