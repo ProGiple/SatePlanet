@@ -2,29 +2,28 @@ package org.satellite.dev.progiple.sateplanet;
 
 import lombok.Getter;
 import org.bukkit.Location;
-import org.novasparkle.lunaspring.API.Util.Service.managers.NBTManager;
+import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
 import org.novasparkle.lunaspring.LunaPlugin;
 import org.satellite.dev.progiple.sateplanet.configs.StorageData;
 import org.satellite.dev.progiple.sateplanet.listeners.*;
 import org.satellite.dev.progiple.sateplanet.storages.Storage;
+import org.satellite.dev.progiple.sateplanet.tasks.TaskManager;
 
 public final class SatePlanet extends LunaPlugin {
     @Getter private static SatePlanet INSTANCE;
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-
         INSTANCE = this;
-        this.initialize();
+        super.onEnable();
 
-        this.loadFiles(true, "storages/storage_menu.yml", "storages/storage_data.yml",
-                "planets/planet_menu.yml", "planets/planets.yml");
+        saveDefaultConfig();
+        this.loadFiles("storages/storage_data.yml", "planets/planet_menu.yml", "planets/planets.yml");
+
         this.registerListeners(
                 new JoinLeaveHandler(),
                 new InteractHandler(),
                 new BlockPlaceHandler(),
-                new PortalTPHandler(),
                 new BlockBreakHandler());
         this.registerTabExecutor(new PlanetCommand(), "sateplanet");
 
@@ -32,5 +31,11 @@ public final class SatePlanet extends LunaPlugin {
             Location location = new Storage(s).getLocation();
             if (location != null) NBTManager.setString(location.getBlock(), "planet-storage", "value");
         });
+    }
+
+    @Override
+    public void onDisable() {
+        TaskManager.stopAll();
+        super.onDisable();
     }
 }

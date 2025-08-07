@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.novasparkle.lunaspring.API.Menus.Items.NonMenuItem;
-import org.novasparkle.lunaspring.API.Menus.MenuManager;
-import org.novasparkle.lunaspring.API.Util.Service.managers.NBTManager;
-import org.novasparkle.lunaspring.API.Util.utilities.Utils;
+import org.novasparkle.lunaspring.API.menus.MenuManager;
+import org.novasparkle.lunaspring.API.menus.items.NonMenuItem;
+import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
+import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.satellite.dev.progiple.sateplanet.configs.*;
 import org.satellite.dev.progiple.sateplanet.planets.PMenu;
 import org.satellite.dev.progiple.sateplanet.storages.Storage;
@@ -26,12 +26,8 @@ public class PlanetCommand implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (commandSender.hasPermission("sateplanet.admin")) {
             switch (strings[0]) {
-                default -> {
-                    return false;
-                }
                 case "reload" -> {
                     Config.reload();
-                    StorageMenuConfig.reload();
                     StorageData.reload();
                     PlanetConfig.reload();
                     PlanetMenuConfig.reload();
@@ -67,7 +63,7 @@ public class PlanetCommand implements TabExecutor {
                             .orElse(null);
                     if (sectionName == null) return false;
 
-                    MenuManager.openInventory(player, new PMenu(player, sectionName));
+                    MenuManager.openInventory(new PMenu(player, sectionName));
                 }
                 case "storage" -> {
                     if (strings.length < 2) return false;
@@ -120,6 +116,9 @@ public class PlanetCommand implements TabExecutor {
                         }
                     }
                 }
+                default -> {
+                    return false;
+                }
             }
         } else Config.sendMessage(commandSender, "noPermission");
         return true;
@@ -128,17 +127,19 @@ public class PlanetCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1) {
-            return List.of("reload", "give", "storage", "planet");
+            return Utils.tabCompleterFiltering(List.of("reload", "give", "storage", "planet"), strings[0]);
         }
         else if (strings.length == 2) {
             if (strings[0].equalsIgnoreCase("give"))
                 return Utils.getPlayerNicks(strings[1]);
             else if (strings[0].equalsIgnoreCase("storage")) {
-                return List.of("set", "update", "addItem");
+                return Utils.tabCompleterFiltering(List.of("set", "update", "addItem"), strings[1]);
             }
             else if (strings[0].equalsIgnoreCase("planet")) {
-                return PlanetConfig.getSection(null).getKeys(false).stream()
-                        .map(k -> PlanetConfig.getString(k + ".command")).toList();
+                return Utils.tabCompleterFiltering(PlanetConfig.getSection(null).getKeys(false)
+                        .stream()
+                        .map(k -> PlanetConfig.getString(k + ".command"))
+                        .toList(), strings[1]);
             }
         }
         else if (strings.length == 3) {

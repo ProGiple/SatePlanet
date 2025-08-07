@@ -7,9 +7,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.novasparkle.lunaspring.API.Configuration.Configuration;
-import org.novasparkle.lunaspring.API.Util.utilities.LunaMath;
-import org.novasparkle.lunaspring.API.Util.utilities.Utils;
+import org.novasparkle.lunaspring.API.configuration.Configuration;
+import org.novasparkle.lunaspring.API.util.utilities.LunaMath;
+import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 
 import java.io.File;

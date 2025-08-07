@@ -5,7 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.novasparkle.lunaspring.API.Util.Service.managers.NBTManager;
+import org.bukkit.inventory.ItemStack;
+import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
 import org.satellite.dev.progiple.sateplanet.storages.Storage;
 import org.satellite.dev.progiple.sateplanet.storages.StorageManager;
 
@@ -20,7 +21,14 @@ public class BlockBreakHandler implements Listener {
 
         Player player = e.getPlayer();
         if (player.hasPermission("sateplanet.admin")) {
-            StorageManager.delete(storage);
-        } else e.setCancelled(true);
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            if (itemStack.getType().isAir()) {
+                StorageManager.delete(storage);
+                return;
+            }
+        }
+
+        storage.drop();
+        e.setCancelled(true);
     }
 }

@@ -10,23 +10,19 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.novasparkle.lunaspring.API.Menus.Items.Clickable;
-import org.novasparkle.lunaspring.API.Menus.MenuManager;
-import org.novasparkle.lunaspring.API.Util.Service.managers.ColorManager;
-import org.novasparkle.lunaspring.API.Util.utilities.LunaTask;
-import org.novasparkle.lunaspring.API.Util.utilities.Utils;
+import org.novasparkle.lunaspring.API.util.service.managers.ColorManager;
+import org.novasparkle.lunaspring.API.util.utilities.LunaTask;
+import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.configs.Config;
 import org.satellite.dev.progiple.sateplanet.configs.StorageData;
-import org.satellite.dev.progiple.sateplanet.storages.menu.StorageMenu;
-import org.satellite.dev.progiple.sateplanet.storages.menu.LootItem;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
-public class Storage implements Clickable {
+public class Storage {
     private final String id = Utils.getRKey((byte) 16);
     private final Location location;
 
@@ -48,23 +44,20 @@ public class Storage implements Clickable {
         StorageManager.getStorages().add(this);
     }
 
-    @Override
-    public void onClick(Player player) {
-        if (this.isClaimed) Config.sendMessage(player, "storageIsClaimed");
-        else if (MenuManager.getActiveInventories().values().stream()
-                .anyMatch(m -> m instanceof StorageMenu menu && menu.getStorage().equals(this))) {
-            Config.sendMessage(player, "storageIsOpened");
-        } else MenuManager.openInventory(player, new StorageMenu(player, this));
-    }
-
-    public void drop(Set<LootItem> lootItems) {
+    public void drop() {
         if (this.isClaimed) return;
         this.isClaimed = true;
+
+        Set<LootItem> lootItems = new HashSet<>();
+        ConfigurationSection section = StorageData.getSection("items");
+        for (int i = 0; i < Config.getInt("storages.uses"); i++) {
+            lootItems.add(new LootItem(section));
+        }
 
         this.task = new StorageTask(this);
         this.task.runTaskAsynchronously(SatePlanet.getINSTANCE());
 
-        if (lootItems == null || lootItems.isEmpty()) return;
+        if (lootItems.isEmpty()) return;
         new LootGetterTask(this.location, lootItems).runTaskAsynchronously(SatePlanet.getINSTANCE());
     }
 
@@ -97,16 +90,16 @@ public class Storage implements Clickable {
         for (String line : section.getStringList("lines")) {
             String reLined = ColorManager.color(line
                     .replace("Material.", "")
-                    .replace("{0}", timer));
+                    .replace("[timer]", timer));
+
+            Material material = reLined.startsWith("THIS") ?
+                    this.location.getBlock().getType() :
+                    Objects.requireNonNull(Material.getMaterial(reLined));
             if (page.getLine(lineIndex) != null) {
-                if (line.startsWith("Material.")) DHAPI.setHologramLine(page, lineIndex, reLined.startsWith("THIS") ?
-                        this.location.getBlock().getType() :
-                        Objects.requireNonNull(Material.getMaterial(reLined)));
+                if (line.startsWith("Material.")) DHAPI.setHologramLine(page, lineIndex, material);
                 else DHAPI.setHologramLine(page, lineIndex, reLined);
             } else {
-                if (line.startsWith("Material.")) DHAPI.addHologramLine(page, reLined.startsWith("THIS") ?
-                        this.location.getBlock().getType() :
-                        Objects.requireNonNull(Material.getMaterial(reLined)));
+                if (line.startsWith("Material.")) DHAPI.addHologramLine(page, material);
                 else DHAPI.addHologramLine(page, reLined);
             }
 
@@ -164,15 +157,16 @@ public class Storage implements Clickable {
             int timer = (int) this.getTicks();
 
             int t = 0;
-            while (t < timer) {
+            do {
                 t++;
 
                 this.taskSecs = t;
-                if (t == timer) this.storage.refresh();
-                else if (holoUpdatable) this.storage.updateHolo("inTimer", timer - this.taskSecs);
+                if (holoUpdatable) this.storage.updateHolo("inTimer", timer - this.taskSecs);
 
                 Thread.sleep(1000);
-            }
+            } while (t < timer);
+
+            this.storage.refresh();
         }
     }
 }

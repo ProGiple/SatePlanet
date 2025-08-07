@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SatePlanet.iml" filepath="$PROJECT_DIR$/SatePlanet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SatePlanet.iml" filepath="$PROJECT_DIR$/.idea/SatePlanet.iml" />
     </modules>
   </component>
 </project>

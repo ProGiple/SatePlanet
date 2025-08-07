@@ -8,12 +8,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.novasparkle.lunaspring.API.Menus.AMenu;
-import org.novasparkle.lunaspring.API.Menus.IMenu;
-import org.novasparkle.lunaspring.API.Menus.Items.Item;
-import org.novasparkle.lunaspring.API.Util.utilities.LunaMath;
-import org.novasparkle.lunaspring.API.Util.utilities.LunaTask;
+import org.novasparkle.lunaspring.API.menus.AMenu;
+import org.novasparkle.lunaspring.API.menus.items.Item;
+import org.novasparkle.lunaspring.API.util.utilities.LunaTask;
+import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.configs.PlanetConfig;
 import org.satellite.dev.progiple.sateplanet.configs.PlanetMenuConfig;
@@ -27,9 +27,9 @@ public class PMenu extends AMenu {
         List<Item> itemList = new ArrayList<>();
 
         ConfigurationSection itemSection = PlanetMenuConfig.getSection("items.animation_item");
-        this.getSlotList(itemSection.getStringList("slots")).forEach(s -> itemList.add(new Item(itemSection, s)));
+        Utils.getSlotList(itemSection.getStringList("slots")).forEach(s -> itemList.add(new Item(itemSection, s)));
 
-        this.task = new Task(PlanetConfig.getSection(planetName), this, itemList);
+        this.task = new Task(PlanetConfig.getSection(planetName), itemList);
     }
 
     @Override
@@ -47,27 +47,16 @@ public class PMenu extends AMenu {
         if (this.task != null) this.task.cancel();
     }
 
-    private List<Integer> getSlotList(Collection<String> slotList) {
-        List<Integer> list = new ArrayList<>();
-        for (String line : slotList) {
-            if (line.contains("-")) {
-                String[] split = line.split("-");
-                for (int i = LunaMath.toInt(split[0]); i <= LunaMath.toInt(split[1]); i++) list.add(i);
-            } else if (line.contains(",")) {
-                String[] split = line.split(",");
-                for (String string : split) list.add(LunaMath.toInt(string.replace(" ", "")));
-            } else list.add(LunaMath.toInt(line));
-        }
-        return list;
+    @Override
+    public void onDrag(InventoryDragEvent e) {
+        e.setCancelled(true);
     }
 
-    private static class Task extends LunaTask {
-        private final IMenu iMenu;
+    private class Task extends LunaTask {
         private final List<Item> itemList;
         private final ConfigurationSection section;
-        public Task(ConfigurationSection worldSection, IMenu iMenu, List<Item> itemList) {
+        public Task(ConfigurationSection worldSection, List<Item> itemList) {
             super(worldSection.getInt("fly_time") * 1000L);
-            this.iMenu = iMenu;
             this.itemList = itemList;
             this.section = worldSection;
         }
@@ -80,7 +69,7 @@ public class PMenu extends AMenu {
                     if (!this.isActive()) return;
 
                     Item item = this.itemList.get(0);
-                    item.insert(this.iMenu);
+                    item.insert(PMenu.this);
 
                     this.itemList.remove(0);
                     Thread.sleep(time);
@@ -93,9 +82,10 @@ public class PMenu extends AMenu {
             Location location = new Location(world, locSection.getInt("x"), locSection.getInt("y"), locSection.getInt("z"));
             if (location == null) return;
 
+            Player player = PMenu.this.getPlayer();
             Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), () -> {
-                this.iMenu.getPlayer().closeInventory();
-                this.iMenu.getPlayer().teleport(location);
+                player.closeInventory();
+                player.teleport(location);
             });
         }
     }

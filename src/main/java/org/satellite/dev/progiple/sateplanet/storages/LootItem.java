@@ -1,11 +1,11 @@
-package org.satellite.dev.progiple.sateplanet.storages.menu;
+package org.satellite.dev.progiple.sateplanet.storages;
 
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.novasparkle.lunaspring.API.Menus.Items.NonMenuItem;
-import org.novasparkle.lunaspring.API.Util.utilities.LunaMath;
+import org.novasparkle.lunaspring.API.menus.items.NonMenuItem;
+import org.novasparkle.lunaspring.API.util.utilities.LunaMath;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class LootItem {
         if (section == null) {
             ItemStack sectionItem = itemsSection.getItemStack(key);
             this.item = sectionItem != null ? sectionItem.clone() : null;
-        } else this.item = new NonMenuItem(section).getDefaultStack();
+        } else this.item = new NonMenuItem(section).getItemStack();
     }
 
     public void drop(Location location) {

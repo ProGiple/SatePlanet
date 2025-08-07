@@ -1,16 +1,13 @@
 package org.satellite.dev.progiple.sateplanet.listeners;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.novasparkle.lunaspring.API.Util.Service.managers.NBTManager;
-import org.satellite.dev.progiple.sateplanet.storages.Storage;
-import org.satellite.dev.progiple.sateplanet.storages.StorageManager;
+import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
 
 public class InteractHandler implements Listener {
     @EventHandler
@@ -40,15 +37,6 @@ public class InteractHandler implements Listener {
                 inventory.setItemInMainHand(helmet);
                 inventory.setHelmet(item);
             }
-        } else {
-            Block block = e.getClickedBlock();
-            if (block == null || !NBTManager.hasTag(block, "planet-storage")) return;
-
-            Storage storage = StorageManager.getStorage(block);
-            if (storage == null) return;
-
-            e.setCancelled(true);
-            storage.onClick(player);
         }
     }
 }

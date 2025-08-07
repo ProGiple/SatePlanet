@@ -2,7 +2,7 @@ package org.satellite.dev.progiple.sateplanet.configs;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.ConfigurationSection;
-import org.novasparkle.lunaspring.API.Configuration.IConfig;
+import org.novasparkle.lunaspring.API.configuration.IConfig;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 
 import java.io.File;
