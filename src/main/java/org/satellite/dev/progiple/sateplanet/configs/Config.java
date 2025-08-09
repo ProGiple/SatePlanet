@@ -35,4 +35,8 @@ public class Config {
     public boolean getBool(String path) {
         return config.getBoolean(path);
     }
+
+    public String getString(String path) {
+        return config.getString(path);
+    }
 }

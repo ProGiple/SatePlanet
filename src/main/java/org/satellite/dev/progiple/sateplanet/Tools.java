@@ -5,14 +5,15 @@ import lombok.Setter;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.novasparkle.lunaspring.API.menus.MenuManager;
 import org.novasparkle.lunaspring.API.util.utilities.LunaMath;
+import org.satellite.dev.progiple.sateplanet.planets.menu.EditMenu;
 
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Set;
 
 @UtilityClass
 public class Tools {
@@ -33,13 +34,6 @@ public class Tools {
                 .sum();
     }
 
-    public int getToughnessLevel(int number, Set<String> keys) {
-        return keys.stream()
-                .map(LunaMath::toInt)
-                .min(Comparator.comparingInt(a -> Math.abs(a - number)))
-                .orElseThrow(() -> new IllegalArgumentException("Множество значений пусто"));
-    }
-
     public PotionEffect getEffect(String line) {
         String[] split = line.split("-");
 
@@ -47,5 +41,16 @@ public class Tools {
         if (type != null) return new PotionEffect(type, timer + 15,
                 split.length == 1 ? 1 : LunaMath.toInt(split[1]) - 1, true, false);
         return null;
+    }
+
+    public void openEditMenu(Player player, int pageIndex) {
+        EditMenu editMenu = MenuManager.getActiveMenus(EditMenu.class, true)
+                .filter(m -> m.getPageIndex() == pageIndex)
+                .findFirst()
+                .orElse(null);
+        if (editMenu == null) editMenu = new EditMenu(player, pageIndex);
+        else editMenu = (EditMenu) editMenu.copy(player);
+
+        MenuManager.openInventory(editMenu);
     }
 }

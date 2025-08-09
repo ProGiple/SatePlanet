@@ -7,6 +7,7 @@ depend:
   - LunaSpring
   - NBTAPI
   - DecentHolograms
+  - SateCustomItems
 commands:
   sateplanet:
     usage: /sateplanet reload/give <player>/storage <set, update>/planet <player>
@@ -19,6 +20,8 @@ commands:
       - splanet
       - splanets
 permissions:
+  sateplanet.planet:
+    default: true
   sateplanet.admin:
     default: op
   sateplanet.oxygenBypass:

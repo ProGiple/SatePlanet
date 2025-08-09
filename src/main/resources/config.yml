@@ -1,7 +1,6 @@
 oxygen_helmet:
   material: BLUE_STAINED_GLASS
   displayName: "&bГермошлем"
-  amount: 1
   lore:
     - " "
     - "&f Защищает от радиации"
@@ -21,7 +20,6 @@ armor_toughness:
   NETHERITE_LEGGINGS: 3
   NETHERITE_BOOTS: 3
 storages:
-  uses: 3
   refreshTime: 60
   holograms:
     isOpened:
@@ -35,6 +33,7 @@ storages:
       height: 2.4
       lines: [ ]
 messages:
+  editMenu_title: "&0Редактирование"
   noPermission: []
   reload: []
   unknownPlayer: []
@@ -43,3 +42,4 @@ messages:
   storageIsClaimed: []
   storageIsOpened: []
   addItem: []
+  giveOxyHelmet: "[player]"

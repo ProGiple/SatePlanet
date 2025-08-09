@@ -1,0 +1,10 @@
+title: "&0"
+rows: 4
+items:
+  decorations: {}
+  planets:
+    moon:
+      displayName: "&a"
+      material: LIME_STAINED_GLASS_PANE
+      lore: []
+      slot: 8

@@ -1,4 +1,4 @@
-package org.satellite.dev.progiple.sateplanet.planets;
+package org.satellite.dev.progiple.sateplanet.planets.menu;
 
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -17,19 +17,20 @@ import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.configs.PlanetConfig;
 import org.satellite.dev.progiple.sateplanet.configs.PlanetMenuConfig;
+import org.satellite.dev.progiple.sateplanet.planets.VirtualPlanet;
 
 import java.util.*;
 
-public class PMenu extends AMenu {
+public class TeleportMenu extends AMenu {
     private final LunaTask task;
-    public PMenu(Player player, String planetName) {
+    public TeleportMenu(Player player, VirtualPlanet virtualPlanet) {
         super(player, PlanetMenuConfig.getTitle(), PlanetMenuConfig.getSize(), PlanetMenuConfig.getSection("items.decorations"));
         List<Item> itemList = new ArrayList<>();
 
         ConfigurationSection itemSection = PlanetMenuConfig.getSection("items.animation_item");
         Utils.getSlotList(itemSection.getStringList("slots")).forEach(s -> itemList.add(new Item(itemSection, s)));
 
-        this.task = new Task(PlanetConfig.getSection(planetName), itemList);
+        this.task = new Task(virtualPlanet, itemList);
     }
 
     @Override
@@ -54,11 +55,11 @@ public class PMenu extends AMenu {
 
     private class Task extends LunaTask {
         private final List<Item> itemList;
-        private final ConfigurationSection section;
-        public Task(ConfigurationSection worldSection, List<Item> itemList) {
-            super(worldSection.getInt("fly_time") * 1000L);
+        private final VirtualPlanet virtualPlanet;
+        public Task(VirtualPlanet virtualPlanet, List<Item> itemList) {
+            super(virtualPlanet.getFly_time() * 1000L);
             this.itemList = itemList;
-            this.section = worldSection;
+            this.virtualPlanet = virtualPlanet;
         }
 
         @Override @SneakyThrows @SuppressWarnings("all")
@@ -69,23 +70,16 @@ public class PMenu extends AMenu {
                     if (!this.isActive()) return;
 
                     Item item = this.itemList.get(0);
-                    item.insert(PMenu.this);
+                    item.insert(TeleportMenu.this);
 
                     this.itemList.remove(0);
                     Thread.sleep(time);
                 }
 
-            World world = Bukkit.getWorld(this.section.getName());
-            if (world == null) return;
-
-            ConfigurationSection locSection = this.section.getConfigurationSection("teleport_location");
-            Location location = new Location(world, locSection.getInt("x"), locSection.getInt("y"), locSection.getInt("z"));
-            if (location == null) return;
-
-            Player player = PMenu.this.getPlayer();
+            Player player = TeleportMenu.this.getPlayer();
             Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), () -> {
                 player.closeInventory();
-                player.teleport(location);
+                player.teleport(this.virtualPlanet.getTeleportLocation());
             });
         }
     }

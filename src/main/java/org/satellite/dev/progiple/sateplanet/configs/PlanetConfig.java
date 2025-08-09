@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.ConfigurationSection;
 import org.novasparkle.lunaspring.API.configuration.IConfig;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
+import org.satellite.dev.progiple.sateplanet.planets.PlanetManager;
 
 import java.io.File;
 
@@ -11,16 +12,16 @@ import java.io.File;
 public class PlanetConfig {
     private final IConfig config;
     static {
-        config = new IConfig(new File(SatePlanet.getINSTANCE().getDataFolder(), "planets/planets.yml"));
+        config = new IConfig(new File(SatePlanet.getINSTANCE().getDataFolder(), "storages/planets.yml"));
     }
 
     public void reload() {
         config.reload();
+        PlanetManager.reload();
     }
 
-    public ConfigurationSection getSection(String worldName) {
-        if (worldName == null) return config.self();
-        return config.getSection(worldName);
+    public ConfigurationSection getSection() {
+        return config.self();
     }
 
     public String getString(String path) {
