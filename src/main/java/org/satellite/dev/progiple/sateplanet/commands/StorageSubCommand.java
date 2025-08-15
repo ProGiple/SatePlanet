@@ -33,7 +33,7 @@ public class StorageSubCommand implements LunaCompleter {
         switch (strings[1]) {
             case "set" -> {
                 if (!(sender instanceof Player player)) {
-                    Config.sendMessage(sender, "unknownPlayer", sender.getName());
+                    Config.sendMessage(sender, "unknownPlayer", "player-%-" + sender.getName());
                     return;
                 }
 
@@ -53,7 +53,7 @@ public class StorageSubCommand implements LunaCompleter {
                 }
 
                 if (!(sender instanceof Player player)) {
-                    Config.sendMessage(sender, "unknownPlayer", sender.getName());
+                    Config.sendMessage(sender, "unknownPlayer", "player-%-" + sender.getName());
                     return;
                 }
 
@@ -64,7 +64,7 @@ public class StorageSubCommand implements LunaCompleter {
             }
             default -> {
                 if (!(sender instanceof Player player)) {
-                    Config.sendMessage(sender, "unknownPlayer", sender.getName());
+                    Config.sendMessage(sender, "unknownPlayer", "player-%-" + sender.getName());
                     return;
                 }
 

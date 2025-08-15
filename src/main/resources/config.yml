@@ -41,5 +41,4 @@ messages:
   updateStorage: []
   storageIsClaimed: []
   storageIsOpened: []
-  addItem: []
   giveOxyHelmet: "[player]"
