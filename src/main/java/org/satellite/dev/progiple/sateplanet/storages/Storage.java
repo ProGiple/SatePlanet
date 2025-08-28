@@ -78,7 +78,7 @@ public class Storage {
         }
         ConfigurationSection section = Config.getSection("storages.holograms." + linesId);
 
-        int neededY = this.location.getBlockY() + section.getInt("height");
+        double neededY = this.location.getBlockY() + section.getDouble("height");
         if (this.hologram.getLocation().getY() != neededY) this.hologram.getLocation().setY(neededY);
 
         HologramPage page = this.hologram.getPage(0);
@@ -94,7 +94,9 @@ public class Storage {
 
             Material material = reLined.startsWith("THIS") ?
                     this.location.getBlock().getType() :
-                    Objects.requireNonNull(Material.getMaterial(reLined));
+                    Material.getMaterial(reLined);
+            material = material == null ? Material.GLASS : material;
+
             if (page.getLine(lineIndex) != null) {
                 if (line.startsWith("Material.")) DHAPI.setHologramLine(page, lineIndex, material);
                 else DHAPI.setHologramLine(page, lineIndex, reLined);
@@ -158,6 +160,7 @@ public class Storage {
 
             int t = 0;
             do {
+                if (!storage.isClaimed) return;
                 t++;
 
                 this.taskSecs = t;

@@ -1,5 +1,6 @@
 package org.satellite.dev.progiple.sateplanet.listeners;
 
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
+import org.novasparkle.lunaspring.API.util.utilities.AnnounceUtils;
 import org.satellite.dev.progiple.satecustomitems.itemManager.ItemComponent;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.storages.Storage;
@@ -32,15 +34,8 @@ public class BlockActionHandler implements Listener {
         }
 
         storage.drop();
-        e.setCancelled(true);
-    }
+        AnnounceUtils.sound(player, Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE);
 
-    @EventHandler
-    public void onPlace(BlockPlaceEvent e) {
-        ItemStack item = e.getItemInHand();
-        if (item.getType().equals(e.getBlockPlaced().getType())) {
-            ItemComponent component = SatePlanet.getINSTANCE().getOxyHelmetComponent();
-            if (component.itemIsComponent(item)) e.setCancelled(true);
-        }
+        e.setCancelled(true);
     }
 }

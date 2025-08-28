@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.novasparkle.lunaspring.API.commands.LunaCompleter;
 import org.novasparkle.lunaspring.API.commands.annotations.Check;
+import org.novasparkle.lunaspring.API.commands.annotations.Permissions;
 import org.novasparkle.lunaspring.API.commands.annotations.SubCommand;
 import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
 import org.novasparkle.lunaspring.API.util.utilities.Utils;
@@ -16,7 +17,7 @@ import org.satellite.dev.progiple.sateplanet.storages.StorageManager;
 import java.util.List;
 
 @SubCommand(appliedCommand = "sateplanet", commandIdentifiers = "storage")
-@Check(permissions = "sateplanet.admin", flags = {})
+@Permissions("sateplanet.admin")
 public class StorageSubCommand implements LunaCompleter {
     // /planet storage set
 

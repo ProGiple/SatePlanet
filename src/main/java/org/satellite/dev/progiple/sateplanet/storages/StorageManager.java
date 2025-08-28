@@ -30,7 +30,7 @@ public class StorageManager {
 
     public void delete(Storage storage) {
         storage.removeHolo();
-        storage.getTask().cancel();
+        if (storage.getTask() != null) storage.getTask().cancel();
 
         storages.remove(storage);
         StorageData.remove(storage.getLocation());

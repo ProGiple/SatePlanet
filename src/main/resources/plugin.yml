@@ -24,7 +24,9 @@ permissions:
     default: true
   sateplanet.admin:
     default: op
-  sateplanet.oxygenBypass:
+  sateplanet.bypass.oxygen:
     default: false
-  sateplanet.gravitationBypass:
+  sateplanet.bypass.gravitation:
+    default: false
+  sateplanet.bypass.teleport:
     default: false

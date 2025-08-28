@@ -4,10 +4,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +16,9 @@ import org.satellite.dev.progiple.sateplanet.Tools;
 import org.satellite.dev.progiple.sateplanet.configs.Config;
 import org.satellite.dev.progiple.sateplanet.configs.StorageData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @MoveIgnored @Getter
 public class EditMenu extends AMenu {
     private final int pageIndex;
@@ -27,14 +27,14 @@ public class EditMenu extends AMenu {
         this.pageIndex = pageIndex;
 
         this.addItems(
-                new Item(Material.TIPPED_ARROW, 1) {
+                new Item(Material.TIPPED_ARROW, "<- Обратно", new ArrayList<>(), 1, (byte) 0) {
                     @Override
                     public Item onClick(InventoryClickEvent e) {
                         if (pageIndex > 0) Tools.openEditMenu(player, pageIndex - 1);
                         return this;
                     }
                 }.setSlot((byte) 52),
-                new Item(Material.TIPPED_ARROW, 1) {
+                new Item(Material.TIPPED_ARROW, "Далее ->", new ArrayList<>(), 1, (byte) 0) {
                     @Override
                     public Item onClick(InventoryClickEvent e) {
                         if (pageIndex < 24) Tools.openEditMenu(player, pageIndex + 1);
@@ -59,15 +59,21 @@ public class EditMenu extends AMenu {
                 this.getInventory().setItem(i - dub, nonMenuItem.getItemStack());
             }
         }
-    }
 
-    @Override
-    public void onOpen(InventoryOpenEvent e) {
         this.insertAllItems();
     }
 
     @Override
+    public void onOpen(InventoryOpenEvent e) {
+    }
+
+    @Override
     public void onClick(InventoryClickEvent e) {
+        if (e.getClick() == ClickType.DOUBLE_CLICK) {
+            e.setCancelled(true);
+            return;
+        }
+
         ItemStack itemStack = e.getCurrentItem();
         if (itemStack == null || itemStack.getType().isAir()) return;
 
@@ -82,7 +88,7 @@ public class EditMenu extends AMenu {
     @Override
     public void onClose(InventoryCloseEvent e) {
         Inventory inventory = e.getInventory();
-        for (int i = 0; i <= 52; i++) {
+        for (int i = 0; i < 52; i++) {
             ItemStack stack = inventory.getItem(i);
             StorageData.setItem(i + (this.pageIndex * 54), stack);
         }

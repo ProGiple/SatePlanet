@@ -32,7 +32,7 @@ public class RadiationTask extends LunaTask {
     public void start() {
         ItemComponent itemComponent = SatePlanet.getINSTANCE().getOxyHelmetComponent();
         while (this.isActive() && TaskManager.check(this)) {
-            Thread.sleep(Tools.getTimer());
+            Thread.sleep(Tools.getTimer() * 50L);
 
             VirtualPlanet virtualPlanet = PlanetManager.getPlanet(this.player.getWorld());
             if (virtualPlanet == null) continue;
@@ -40,7 +40,7 @@ public class RadiationTask extends LunaTask {
             PlayerInventory inventory = player.getInventory();
 
             ItemStack helmet = inventory.getHelmet();
-            if (!player.hasPermission("sateplanet.oxygenBypass")) {
+            if (!player.hasPermission("sateplanet.bypass.oxygen")) {
                 if (helmet == null || helmet.getType().isAir() || !itemComponent.itemIsComponent(helmet)) {
                     this.task(() -> {
                         virtualPlanet.getDisOxygenEffects().forEach(line -> {
@@ -51,7 +51,7 @@ public class RadiationTask extends LunaTask {
                 }
             }
 
-            if (player.hasPermission("sateplanet.gravitationBypass")) return;
+            if (player.hasPermission("sateplanet.bypass.gravitation")) return;
             int toughness = Tools.getToughness(
                     inventory.getBoots(),
                     inventory.getLeggings(),
@@ -75,6 +75,7 @@ public class RadiationTask extends LunaTask {
     }
 
     private void task(Runnable runnable) {
-        Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), runnable);
+        if (!SatePlanet.getINSTANCE().isInDisabling())
+            Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), runnable);
     }
 }

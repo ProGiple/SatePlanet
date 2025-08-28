@@ -19,12 +19,7 @@ armor_toughness:
   NETHERITE_CHESTPLATE: 3
   NETHERITE_LEGGINGS: 3
   NETHERITE_BOOTS: 3
-nether_link:
-  world: world_nether
-  world1: world_nether1
-  world2: world_nether2
 storages:
-  uses: 3
   refreshTime: 60
   holograms:
     isOpened:
@@ -38,6 +33,7 @@ storages:
       height: 2.4
       lines: [ ]
 messages:
+  editMenu_title: "&0Редактирование"
   noPermission: []
   reload: []
   unknownPlayer: []
@@ -45,4 +41,4 @@ messages:
   updateStorage: []
   storageIsClaimed: []
   storageIsOpened: []
-  addItem: []
+  giveOxyHelmet: "[player]"

@@ -23,6 +23,7 @@ import java.util.*;
 
 public class TeleportMenu extends AMenu {
     private final LunaTask task;
+    private boolean isOpened;
     public TeleportMenu(Player player, VirtualPlanet virtualPlanet) {
         super(player, PlanetMenuConfig.getTitle(), PlanetMenuConfig.getSize(), PlanetMenuConfig.getSection("items.decorations"));
         List<Item> itemList = new ArrayList<>();
@@ -35,6 +36,7 @@ public class TeleportMenu extends AMenu {
 
     @Override
     public void onOpen(InventoryOpenEvent e) {
+        this.isOpened = true;
         this.task.runTaskAsynchronously(SatePlanet.getINSTANCE());
     }
 
@@ -45,6 +47,7 @@ public class TeleportMenu extends AMenu {
 
     @Override
     public void onClose(InventoryCloseEvent e) {
+        this.isOpened = false;
         if (this.task != null) this.task.cancel();
     }
 
@@ -65,9 +68,9 @@ public class TeleportMenu extends AMenu {
         @Override @SneakyThrows @SuppressWarnings("all")
         public void start() {
             int time = (int) (this.getTicks() / this.itemList.size());
-            if (time > 0)
+            if (time > 0 && !(getPlayer().hasPermission("sateplanet.bypass.teleport")))
                 while (!this.itemList.isEmpty()) {
-                    if (!this.isActive()) return;
+                    if (!this.isActive() || !isOpened) return;
 
                     Item item = this.itemList.get(0);
                     item.insert(TeleportMenu.this);
@@ -79,7 +82,7 @@ public class TeleportMenu extends AMenu {
             Player player = TeleportMenu.this.getPlayer();
             Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), () -> {
                 player.closeInventory();
-                player.teleport(this.virtualPlanet.getTeleportLocation());
+                this.virtualPlanet.teleport(player);
             });
         }
     }
