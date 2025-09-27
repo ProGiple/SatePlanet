@@ -27,13 +27,13 @@ public class PlanetsMenu extends AMenu {
             VirtualPlanet virtualPlanet = PlanetManager.getPlanet(key);
             if (virtualPlanet == null) continue;
 
-            this.addItems(new PlanetItem(planetSection, virtualPlanet));
+            this.addItems(false, new PlanetItem(planetSection, virtualPlanet));
         }
     }
 
     @Override
     public void onOpen(InventoryOpenEvent e) {
-        this.insertAllItems();
+        this.insertAll();
     }
 
     @Override
