@@ -26,19 +26,19 @@ public class EditMenu extends AMenu {
         super(player, Config.getString("messages.editMenu_title"), (byte) 54);
         this.pageIndex = pageIndex;
 
-        this.addItems(
-                new Item(Material.TIPPED_ARROW, "<- Обратно", new ArrayList<>(), 1, (byte) 0) {
+        this.addItems(true,
+                new Item(Material.TIPPED_ARROW, "&b<- Обратно", new ArrayList<>(), 1, (byte) 0) {
                     @Override
                     public Item onClick(InventoryClickEvent e) {
                         if (pageIndex > 0) Tools.openEditMenu(player, pageIndex - 1);
-                        return this;
+                        return super.onClick(e);
                     }
                 }.setSlot((byte) 52),
-                new Item(Material.TIPPED_ARROW, "Далее ->", new ArrayList<>(), 1, (byte) 0) {
+                new Item(Material.TIPPED_ARROW, "&bДалее ->", new ArrayList<>(), 1, (byte) 0) {
                     @Override
                     public Item onClick(InventoryClickEvent e) {
                         if (pageIndex < 24) Tools.openEditMenu(player, pageIndex + 1);
-                        return this;
+                        return super.onClick(e);
                     }
                 }.setSlot((byte) 53));
 
@@ -59,8 +59,6 @@ public class EditMenu extends AMenu {
                 this.getInventory().setItem(i - dub, nonMenuItem.getItemStack());
             }
         }
-
-        this.insertAllItems();
     }
 
     @Override

@@ -3,13 +3,9 @@ package org.satellite.dev.progiple.sateplanet.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.novasparkle.lunaspring.API.commands.LunaCompleter;
-import org.novasparkle.lunaspring.API.commands.annotations.Check;
+import org.novasparkle.lunaspring.API.commands.LunaExecutor;
 import org.novasparkle.lunaspring.API.commands.annotations.Permissions;
 import org.novasparkle.lunaspring.API.commands.annotations.SubCommand;
-import org.novasparkle.lunaspring.API.menus.items.NonMenuItem;
-import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
 import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.satellite.dev.progiple.satecustomitems.itemManager.ItemComponent;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
@@ -19,7 +15,7 @@ import java.util.List;
 
 @SubCommand(appliedCommand = "sateplanet", commandIdentifiers = "give")
 @Permissions("sateplanet.admin")
-public class GiveSubCommand implements LunaCompleter {
+public class GiveSubCommand implements LunaExecutor {
     @Override
     public List<String> tabComplete(CommandSender sender, List<String> list) {
         return list.size() == 1 ? Utils.getPlayerNicks(list.get(0)) : null;

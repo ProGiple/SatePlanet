@@ -33,9 +33,10 @@ public class BlockActionHandler implements Listener {
             }
         }
 
+        e.setCancelled(true);
+        if (storage.isClaimed()) return;
+
         storage.drop();
         AnnounceUtils.sound(player, Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE);
-
-        e.setCancelled(true);
     }
 }

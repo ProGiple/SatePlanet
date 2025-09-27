@@ -5,32 +5,33 @@ import eu.decentsoftware.holograms.api.holograms.Hologram;
 import eu.decentsoftware.holograms.api.holograms.HologramPage;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 import org.novasparkle.lunaspring.API.util.service.managers.ColorManager;
 import org.novasparkle.lunaspring.API.util.utilities.LunaTask;
 import org.novasparkle.lunaspring.API.util.utilities.Utils;
+import org.novasparkle.lunaspring.API.util.utilities.rarities.RarityManager;
+import org.novasparkle.lunaspring.API.util.utilities.rarities.StackRandomizer;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.configs.Config;
 import org.satellite.dev.progiple.sateplanet.configs.StorageData;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Getter
 public class Storage {
     private final String id = Utils.getRKey((byte) 16);
     private final Location location;
+    private final Material blockType;
 
     private boolean isClaimed = false;
     private Hologram hologram;
     private LunaTask task;
     public Storage(Location location) {
         this.location = location;
+        this.blockType = this.location.getBlock().getType();
         this.createHolo("isOpened");
 
         StorageData.add(location);
@@ -39,6 +40,7 @@ public class Storage {
 
     public Storage(String strLoc) {
         this.location = StorageData.parseLocation(strLoc);
+        this.blockType = this.location.getBlock().getType();
         this.createHolo("isOpened");
 
         StorageManager.getStorages().add(this);
@@ -48,10 +50,14 @@ public class Storage {
         if (this.isClaimed) return;
         this.isClaimed = true;
 
-        Set<LootItem> lootItems = new HashSet<>();
+        Set<ItemStack> lootItems = new HashSet<>();
         ConfigurationSection section = StorageData.getSection("items");
         for (int i = 0; i < Config.getInt("storages.uses"); i++) {
-            lootItems.add(new LootItem(section));
+            ItemStack stack = RarityManager.calculateItemStack(section,
+                    StackRandomizer.ADVANCED_DURABILITY,
+                    StackRandomizer.ADVANCED_ENCHANTS,
+                    StackRandomizer.ADVANCED_AMOUNT);
+            lootItems.add(stack);
         }
 
         this.task = new StorageTask(this);
@@ -93,7 +99,7 @@ public class Storage {
                     .replace("[timer]", timer));
 
             Material material = reLined.startsWith("THIS") ?
-                    this.location.getBlock().getType() :
+                    this.blockType :
                     Material.getMaterial(reLined);
             material = material == null ? Material.GLASS : material;
 
@@ -124,8 +130,8 @@ public class Storage {
 
     private static class LootGetterTask extends LunaTask {
         private final Location location;
-        private final Set<LootItem> lootItems;
-        public LootGetterTask(Location location, Set<LootItem> lootItems) {
+        private final Set<ItemStack> lootItems;
+        public LootGetterTask(Location location, Set<ItemStack> lootItems) {
             super(0);
             this.location = location.clone().add(0.5, 1, 0.5);
             this.lootItems = lootItems;
@@ -133,11 +139,12 @@ public class Storage {
 
         @Override @SneakyThrows
         public void start() {
-            for (LootItem lootItem : this.lootItems) {
+            World world = location.getWorld();
+            for (ItemStack lootItem : this.lootItems) {
                 Thread.sleep(1000);
 
                 Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), () -> {
-                    lootItem.drop(this.location);
+                    world.dropItem(this.location, lootItem);
                     this.location.getNearbyPlayers(12)
                             .forEach(p -> p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1));
                 });

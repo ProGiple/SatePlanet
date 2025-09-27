@@ -3,6 +3,7 @@ package org.satellite.dev.progiple.sateplanet;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.novasparkle.lunaspring.API.commands.CommandInitializer;
 import org.novasparkle.lunaspring.API.commands.LunaExecutor;
 import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
 import org.novasparkle.lunaspring.LunaPlugin;
@@ -33,7 +34,7 @@ public final class SatePlanet extends LunaPlugin {
                 "menu/all_planets_menu.yml");
 
         this.registerListeners(new JoinLeaveHandler(), new BlockActionHandler());
-        LunaExecutor.initialize(this, "#.commands");
+        CommandInitializer.initialize(this, "#.commands");
 
         StorageData.getList().forEach(s -> {
             Location location = new Storage(s).getLocation();

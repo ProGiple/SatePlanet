@@ -44,7 +44,7 @@ public class OxyHelmetComponent implements ClickableItemComponent, BlockPlaceIte
     @Override
     public NonMenuItem createItem() {
         NonMenuItem item = new NonMenuItem(Config.getSection("oxygen_helmet"));
-        NBTManager.setBool(item.getItemStack(), "sateplanet_oxy_helmet", true);
+        NBTManager.setString(item.getItemStack(), "sateplanet_oxy_helmet", "yes");
         return item;
     }
 
