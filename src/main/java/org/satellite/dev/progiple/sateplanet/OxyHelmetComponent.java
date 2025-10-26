@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.novasparkle.lunaspring.API.items.secondary.BlockPlaceItemComponent;
+import org.novasparkle.lunaspring.API.items.secondary.ClickableItemComponent;
 import org.novasparkle.lunaspring.API.menus.items.NonMenuItem;
 import org.novasparkle.lunaspring.API.util.service.managers.NBTManager;
 import org.novasparkle.lunaspring.API.util.utilities.AnnounceUtils;
-import org.satellite.dev.progiple.satecustomitems.itemManager.secondary.BlockPlaceItemComponent;
-import org.satellite.dev.progiple.satecustomitems.itemManager.secondary.ClickableItemComponent;
 import org.satellite.dev.progiple.sateplanet.configs.Config;
 
 @Getter

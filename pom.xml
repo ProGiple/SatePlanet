@@ -6,7 +6,7 @@
 
   <groupId>org.satellite.dev.progiple</groupId>
   <artifactId>SatePlanet</artifactId>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
   <packaging>jar</packaging>
 
   <name>SatePlanet</name>
@@ -79,7 +79,7 @@
       <dependency>
           <groupId>com.github.NovaSparkle</groupId>
           <artifactId>LunaSpring</artifactId>
-          <version>3.7.3f</version>
+          <version>3.7.5</version>
           <scope>provided</scope>
       </dependency>
       <dependency>
@@ -98,12 +98,6 @@
           <groupId>de.tr7zw</groupId>
           <artifactId>item-nbt-api-plugin</artifactId>
           <version>2.14.1</version>
-          <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>com.github.ProGiple</groupId>
-          <artifactId>SateCustomItems</artifactId>
-          <version>1.0.10</version>
           <scope>provided</scope>
       </dependency>
   </dependencies>

@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.novasparkle.lunaspring.API.commands.LunaExecutor;
 import org.novasparkle.lunaspring.API.commands.annotations.Permissions;
 import org.novasparkle.lunaspring.API.commands.annotations.SubCommand;
+import org.novasparkle.lunaspring.API.items.ItemComponent;
 import org.novasparkle.lunaspring.API.util.utilities.Utils;
-import org.satellite.dev.progiple.satecustomitems.itemManager.ItemComponent;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.configs.Config;
 
