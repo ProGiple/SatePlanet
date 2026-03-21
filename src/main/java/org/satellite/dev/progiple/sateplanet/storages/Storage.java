@@ -9,7 +9,7 @@ import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.novasparkle.lunaspring.API.util.service.managers.ColorManager;
-import org.novasparkle.lunaspring.API.util.utilities.LunaTask;
+import org.novasparkle.lunaspring.API.util.utilities.tasks.LunaTask;
 import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.novasparkle.lunaspring.API.util.utilities.rarities.RarityManager;
 import org.novasparkle.lunaspring.API.util.utilities.rarities.StackRandomizer;
@@ -61,10 +61,10 @@ public class Storage {
         }
 
         this.task = new StorageTask(this);
-        this.task.runTaskAsynchronously(SatePlanet.getINSTANCE());
+        this.task.runTaskAsynchronously(SatePlanet.getInstance());
 
         if (lootItems.isEmpty()) return;
-        new LootGetterTask(this.location, lootItems).runTaskAsynchronously(SatePlanet.getINSTANCE());
+        new LootGetterTask(this.location, lootItems).runTaskAsynchronously(SatePlanet.getInstance());
     }
 
     public void refresh() {
@@ -143,7 +143,7 @@ public class Storage {
             for (ItemStack lootItem : this.lootItems) {
                 Thread.sleep(1000);
 
-                Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), () -> {
+                Bukkit.getScheduler().runTask(SatePlanet.getInstance(), () -> {
                     world.dropItem(this.location, lootItem);
                     this.location.getNearbyPlayers(12)
                             .forEach(p -> p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1));

@@ -11,12 +11,12 @@ import org.satellite.dev.progiple.sateplanet.Tools;
 public class Config {
     private final IConfig config;
     static {
-        config = new IConfig(SatePlanet.getINSTANCE());
+        config = new IConfig(SatePlanet.getInstance());
         Tools.setToughnessSection(Config.getSection("armor_toughness"));
     }
 
     public void reload() {
-        config.reload(SatePlanet.getINSTANCE());
+        config.reload(SatePlanet.getInstance());
         Tools.setToughnessSection(Config.getSection("armor_toughness"));
     }
 

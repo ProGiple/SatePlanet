@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.novasparkle.lunaspring.API.items.ItemComponent;
-import org.novasparkle.lunaspring.API.util.utilities.LunaTask;
+import org.novasparkle.lunaspring.API.util.utilities.tasks.LunaTask;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
 import org.satellite.dev.progiple.sateplanet.Tools;
 import org.satellite.dev.progiple.sateplanet.planets.GravitationLevel;
@@ -30,7 +30,7 @@ public class RadiationTask extends LunaTask {
     @Override @SneakyThrows
     @SuppressWarnings("all")
     public void start() {
-        ItemComponent itemComponent = SatePlanet.getINSTANCE().getOxyHelmetComponent();
+        ItemComponent itemComponent = SatePlanet.getInstance().getOxyHelmetComponent();
         while (this.isActive() && TaskManager.check(this)) {
             Thread.sleep(Tools.getTimer() * 50L);
 
@@ -75,7 +75,7 @@ public class RadiationTask extends LunaTask {
     }
 
     private void task(Runnable runnable) {
-        if (!SatePlanet.getINSTANCE().isInDisabling())
-            Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), runnable);
+        if (!SatePlanet.getInstance().isInDisabling())
+            Bukkit.getScheduler().runTask(SatePlanet.getInstance(), runnable);
     }
 }

@@ -15,13 +15,13 @@ import org.satellite.dev.progiple.sateplanet.tasks.TaskManager;
 
 @Getter
 public final class SatePlanet extends LunaPlugin {
-    @Getter private static SatePlanet INSTANCE;
+    @Getter private static SatePlanet instance;
     private OxyHelmetComponent oxyHelmetComponent;
     private boolean inDisabling = false;
 
     @Override
     public void onEnable() {
-        INSTANCE = this;
+        instance = this;
         super.onEnable();
 
         saveDefaultConfig();

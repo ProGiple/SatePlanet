@@ -15,7 +15,7 @@ public class JoinLeaveHandler implements Listener {
         Player player = e.getPlayer();
 
         RadiationTask radiationTask = new RadiationTask(player);
-        radiationTask.runTaskAsynchronously(SatePlanet.getINSTANCE());
+        radiationTask.runTaskAsynchronously(SatePlanet.getInstance());
         TaskManager.register(radiationTask);
     }
 

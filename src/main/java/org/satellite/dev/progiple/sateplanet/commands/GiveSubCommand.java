@@ -30,7 +30,7 @@ public class GiveSubCommand implements LunaExecutor {
             return;
         }
 
-        ItemComponent itemComponent = SatePlanet.getINSTANCE().getOxyHelmetComponent();
+        ItemComponent itemComponent = SatePlanet.getInstance().getOxyHelmetComponent();
         itemComponent.createItem().give(player);
         Config.sendMessage(sender, "giveOxyHelmet", "player-%-" + player.getName());
     }

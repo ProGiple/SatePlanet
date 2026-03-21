@@ -12,7 +12,7 @@ import java.io.File;
 public class AllPlanetsMenuConfig {
     private final IConfig config;
     static {
-        config = new IConfig(new File(SatePlanet.getINSTANCE().getDataFolder(), "menu/all_planets_menu.yml"));
+        config = new IConfig(new File(SatePlanet.getInstance().getDataFolder(), "menu/all_planets_menu.yml"));
     }
 
     public void reload() {

@@ -2,8 +2,6 @@ package org.satellite.dev.progiple.sateplanet.planets.menu;
 
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,10 +10,9 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.novasparkle.lunaspring.API.menus.AMenu;
 import org.novasparkle.lunaspring.API.menus.items.Item;
-import org.novasparkle.lunaspring.API.util.utilities.LunaTask;
+import org.novasparkle.lunaspring.API.util.utilities.tasks.LunaTask;
 import org.novasparkle.lunaspring.API.util.utilities.Utils;
 import org.satellite.dev.progiple.sateplanet.SatePlanet;
-import org.satellite.dev.progiple.sateplanet.configs.PlanetConfig;
 import org.satellite.dev.progiple.sateplanet.configs.PlanetMenuConfig;
 import org.satellite.dev.progiple.sateplanet.planets.VirtualPlanet;
 
@@ -37,7 +34,7 @@ public class TeleportMenu extends AMenu {
     @Override
     public void onOpen(InventoryOpenEvent e) {
         this.isOpened = true;
-        this.task.runTaskAsynchronously(SatePlanet.getINSTANCE());
+        this.task.runTaskAsynchronously(SatePlanet.getInstance());
     }
 
     @Override
@@ -80,7 +77,7 @@ public class TeleportMenu extends AMenu {
                 }
 
             Player player = TeleportMenu.this.getPlayer();
-            Bukkit.getScheduler().runTask(SatePlanet.getINSTANCE(), () -> {
+            Bukkit.getScheduler().runTask(SatePlanet.getInstance(), () -> {
                 player.closeInventory();
                 this.virtualPlanet.teleport(player);
             });

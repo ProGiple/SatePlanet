@@ -18,7 +18,7 @@ import java.util.List;
 public class StorageData {
     private final Configuration config;
     static {
-        config = new Configuration(new File(SatePlanet.getINSTANCE().getDataFolder(), "storages/storage_data.yml"));
+        config = new Configuration(new File(SatePlanet.getInstance().getDataFolder(), "storages/storage_data.yml"));
     }
 
     public List<String> getList() {

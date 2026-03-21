@@ -39,16 +39,7 @@ public class PlanetsMenu extends AMenu {
     @Override
     public void onClick(InventoryClickEvent e) {
         e.setCancelled(true);
-
-        ItemStack itemStack = e.getCurrentItem();
-        if (itemStack == null || itemStack.getType().isAir()) return;
-
-        for (Item item : this.getItemList()) {
-            if (item.getItemStack().equals(itemStack) && item.getSlot() == e.getSlot()) {
-                item.onClick(e);
-                return;
-            }
-        }
+        super.onClick(e);
     }
 
     @Override
